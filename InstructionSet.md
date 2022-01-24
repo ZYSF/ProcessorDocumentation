@@ -176,6 +176,21 @@ Implementations may provide specialised instructions and/or specialised hardware
 
 Implementations can also either ignore or raise errors if the higher/lower bits of the addresses are not what they expect, or more generally if the address is protected or just beyond memory (this generally means that read/write addresses should be multiples of four, and that any unused higher bits should be left as zero).
 
+
+### Read32h (read data memory, high 32-bits)
+
+    OP_READ32H  		0xD7
+  
+    0xD7abiiii: a[conceptual bits 63:32]=data[b+i];
+
+"Conceptually" reads the upper 32-bits of a register from memory.
+
+On a 64-bit processor implementation, this will load the actual top half of the (64-bit) register, leaving the other (lower) 32 bits untouched.
+
+On a 32-bit processor implementation, this instruction can either be ignored completely (treated as a "no-op") or otherwise performs some kind of "dummy" read which may (or may not) test that the bits match the highest actual bit of the register. That is, it "simulates" loading the top half of a 32-bit value, even if the register is only 32 bits.
+
+NOTE: The "first generation" processor design used/uses a different encoding of `0xD6`, which conflicts with other "second-generation" instructions. Assemblers/tools can refer to the old encoding as `OP_GEN1READ32H`.
+
 ### Read16 (planned)
 
     OP_READ16			0xD1
@@ -225,6 +240,22 @@ NOTE: This is only meaningful for 64-bit implementations, and need not be implem
     0xDAbciiii: data[b+i]=c;
     
 This only writes lower 32 bits of register (or the whole thing in 32-bit implementations).
+
+### Write32h (write data memory, high 32-bits)
+
+    OP_WRITE32H		0xDF
+  
+    0xDFbciiii: data[b+i]=c[conceptual bits 63:32];
+    
+"Conceptually" writes the upper 32 bits of a 64-bit register to memory.
+
+On 64-bit implementations this will write the actual upper bits of the register.
+
+On 32-bit implementations, this simulates the equivalent operation by writing a word composed entirely of the value of the sign (highest bit) of the register.
+
+This allows for writing programs which adapt naturally to 32-/64-bit word sizes.
+
+NOTE: The "first generation" processor design used/uses a different encoding of `0xDE`, which conflicts with other "second-generation" instructions. Assemblers/tools can refer to the old encoding as `OP_GEN1WRITE32H`.
 
 ### Write16 (planned)
 
@@ -283,6 +314,8 @@ This can also be used for unconditional jumps to local addresses (since any regi
 These have only just been added at time of writing and haven't really been tested yet:
 
 The first set may be replaced or re-encoded in favour of more rational extended read/write operations (see "planned" instructions):
+
+NOTE: These are now being phased out in favour of new encodings:
 
 * 0xD6 - read32h (same as read32 except replaces the high 32 bits of the register without altering the low bits)
 * 0xDE - write32h (same as write32 except takes the data from the high 32 bits of the register)
