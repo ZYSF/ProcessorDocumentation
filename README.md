@@ -14,7 +14,7 @@ The contents of this repository is developed from scratch (based on my previous/
 
 Firstly there were/are a lot of bugs, so much of the logic shouldn't be expected to work without specific testing of each feature/in each configuration!
 
-Architecturally, though, there is one major breaking change: The `READ32H` and `WRITE32H` opcodes are moved to better encodings, and are now more accurately-specified for 32-bit mode. This allows for more thorough implementation of the rest of the planned read/write instructions, and also serves to allow easier implementation of 32-/64-bit-neutral implementations.
+Architecturally, though, there is one major breaking change: The `READ32H` and `WRITE32H` opcodes are moved to better encodings, and are now more accurately-specified for 32-bit mode. This allows for more thorough implementation of the rest of the planned read/write instructions, and also serves to allow easier implementation of 32-/64-bit-neutral programs.
 
 Other new instructions either fit into previously-unused encodings or only apply to 32-bit mode (which was not fully documented or implemented in the original "gen1cpu").
 
