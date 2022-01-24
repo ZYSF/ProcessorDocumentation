@@ -1,4 +1,4 @@
-# Modes
+# Modes & Exceptions
 
 ## Mode Switching
 
