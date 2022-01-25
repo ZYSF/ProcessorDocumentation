@@ -128,41 +128,25 @@ The important part here is that we're never left in-between contexts or part-way
   
 Invalid instruction, but reserved for traps. That is, if a debugger replaces an instruction with a special one to trigger an exception back into the debugger, then it will probably be one of these instructions.
 
-### Ctrlin64 (read 64-bit processor info)
+### Ctrlin (read processor info)
 
-    OP_CTRLIN64		0xC3
+    OP_CTRLIN		0xC7
   
     0xC3axiiii: a=ctrl[i];
 
 Control registers (which are used for internal circuits like the timer) are accessed similarly to the memory interface, except that the size of values always corresponds to the internal register size and control registers are indexed counting in 1 rather than word sizes (ensuring there is never any ambiguity about the basic operations).
 
 The other difference is that the base register (which the immediate value would otherwise be added to to get the final address) has been removed from the control register instructions. This is to ensure that control register can be accessed without needing a clear register (since they might be used for saving an initial register during context switching, so that it can then be free to calculate locations to save the others).
+    
+NOTE: The first generation used register-width-specific encodings (0xC2 for 32-bit, 0xC3 for 64-bit). This was changed to make 32-/64-bit portability simpler (since they are essentially the same operations regardless of sizing).
 
 ### Ctrlout64 (write 64-bit processor info)
 
-    OP_CTRLOUT64		0xCB
+    OP_CTRLOUT  		0xCF
   
-    0xCBxciiii: ctrl[i]=c;
-
-### Ctrlin32 (read 32-bit co/processor info)
-
-NOTE: This is a planned instruction for 32-bit versions. Control registers in a 64-bit processor/mode are always 64-bits, but some may still be restricted for compatibility with 32-bit implementations (or compatibility modes).
-
-    OP_CTRLIN32		0xC2
-  
-    0xC3axiiii: a=ctrl[i];
-
-Control registers (which are used for internal circuits like the timer) are accessed similarly to the memory interface, except that the size of values always corresponds to the internal register size and control registers are indexed counting in 1 rather than word sizes (ensuring there is never any ambiguity about the basic operations).
-
-The other difference is that the base register (which the immediate value would otherwise be added to to get the final address) has been removed from the control register instructions. This is to ensure that control register can be accessed without needing a clear register (since they might be used for saving an initial register during context switching, so that it can then be free to calculate locations to save the others).
-
-### Ctrlout32 (write 32-bit co/processor info)
-
-NOTE: This is a planned instruction for 32-bit versions. Control registers in a 64-bit processor/mode are always 64-bits, but some may still be restricted for compatibility with 32-bit implementations (or compatibility modes).
-
-    OP_CTRLOUT32		0xCA
-  
-    0xCBxciiii: ctrl[i]=c;
+    0xCFxciiii: ctrl[i]=c;
+    
+NOTE: The first generation used register-width-specific encodings (0xCA for 32-bit, 0xCB for 64-bit). This was changed to make 32-/64-bit portability simpler (since they are essentially the same operations regardless of sizing).
 
 ### Read32 (read data memory)
 
