@@ -241,13 +241,13 @@ NOTE: This is only meaningful for 64-bit implementations, and need not be implem
     
 This only writes lower 32 bits of register (or the whole thing in 32-bit implementations).
 
-### Write32h (write data memory, high 32-bits)
+### Write32hx (write data memory, high 32-bits/sign-extension)
 
-    OP_WRITE32H		0xDF
+    OP_WRITE32HX	0xDF
   
     0xDFbciiii: data[b+i]=c[conceptual bits 63:32];
     
-"Conceptually" writes the upper 32 bits of a 64-bit register to memory.
+"Conceptually" writes the upper 32 bits of a signed 64-bit register to memory.
 
 On 64-bit implementations this will write the actual upper bits of the register.
 
@@ -255,7 +255,23 @@ On 32-bit implementations, this simulates the equivalent operation by writing a 
 
 This allows for writing programs which adapt naturally to 32-/64-bit word sizes.
 
-NOTE: The "first generation" processor design used/uses a different encoding of `0xDE`, which conflicts with other "second-generation" instructions. Assemblers/tools can refer to the old encoding as `OP_GEN1WRITE32H`.
+NOTE: The "first generation" processor design used/uses a different encoding of `0xDE` (now used for the `WRITE32HZ` variant). Assemblers/tools can refer to the old encoding as `OP_GEN1WRITE32H`.
+
+### Write32hz (planned, write data memory, high 32-bits/zero-extension)
+
+    OP_WRITE32HZ	0xDE
+  
+    0xDEbciiii: data[b+i]=c[conceptual bits 63:32];
+    
+"Conceptually" writes the upper 32 bits of an unsigned 64-bit register to memory.
+
+On 64-bit implementations this will write the actual upper bits of the register.
+
+On 32-bit implementations, this simulates the equivalent operation by writing a word composed entirely of zero bits (i.e. the conceptual higher bits of an unsigned 32-bit register).
+
+This allows for writing programs which adapt naturally to 32-/64-bit word sizes.
+
+NOTE: This conflicts with the old `WRITE32H` instruction encoding from the first generation, and partly works the same. Assemblers/tools can refer to the old instruction as something like `OP_GEN1WRITE32H`.
 
 ### Write16 (planned)
 
