@@ -37,7 +37,7 @@ The overall design is a somewhat-RISC-like system (roughly meaning that instruct
 * Core features must include basic system-management and protection features (to ensure that basic system software doesn't need any extra add-ons to manage/debug programs properly)
 * The reference implementations (whether 32-bit or 64-bit internally) should be easy to deploy on a simple 32-bit-only memory bus (more-complex bus operations should be optional and emulatable in software)
 * Optimisation is not particularly important
-** As long as the core design/instruction set itself isn't especially inefficient, the details can always be optimised later!
+     * As long as the core design/instruction set itself isn't especially inefficient, the details can always be optimised later!
 
 As a result, some major differences from other systems include:
 
