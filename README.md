@@ -24,6 +24,31 @@ Creating a new "major version" within the same architecture allows for the first
 
 The current version of the processor generator can even backport some fixes and other non-conflicting updates to the "gen1" implementation!
 
+## Design Overview
+
+The overall design is a somewhat-RISC-like system (roughly meaning that instructions typically share common sizing & layouts) and follows from some basic principles:
+
+* The instruction encoding needs to be original, purpose-designed and well-structured, specifically taking effort to ignore any complex operations from proprietary architectures and only implementing instructions as needs arise
+** Besides technical reasons, this serves to isolate the system from any complex intellectual property questions: _The core design (as documented here) is completely free for you to copy/modify/redistribute/etc._ "ProcessorDocumentation", "generation 1", "generation 2" etc. are not used as trademarks either!
+* Porting existing compilers is not necessarily worth losing sleep over
+** I've already demonstrated that it's fairly easy to add additional decoding/emulation modes to the processor design
+* The system needs to be usable at least for testing purposes in simulators and "cheap" FPGAs (not necessarily _the cheapest_ FPGAs, but at least mid-level ones!)
+* The "processor" should be mostly self-reliant, besides obvious memory/IO interfaces (it shouldn't rely on any complex external circuitry or designs for any "core features")
+* Core features must include basic system-management and protection features (to ensure that basic system software doesn't need any extra add-ons to manage/debug programs properly)
+* The reference implementations (whether 32-bit or 64-bit internally) should be easy to deploy on a simple 32-bit-only memory bus (more-complex bus operations should be optional and emulatable in software)
+* Optimisation is not particularly important
+** As long as the core design/instruction set itself isn't especially inefficient, the details can always be optimised later!
+
+As a result, some major differences from other systems include:
+
+* Well-written system/testing programs can operate on both 32- and 64-bit implementations from the same executable (without re-compilation)
+* C compilers could still be ported to the system, but some features are more suited to specialised/modern programming systems
+* Basic exception/interrupt/timer/memory-protection/address-translation features and user-/system-mode switching are built-in, these aren't part of some separate extension or external circuit
+* Some features like register protection may be somewhat-unique to the platform
+* Aside from the more-complex built-in features, the processor features can easily be scaled down to optimise for only a very minimal set of instructions or scaled up to handle all sorts of custom ISA extensions
+* Because performance is not a great immediate concern (so the processor internally can execute each instruction in multiple stages), adding checking/exception-handling at the necessary stages has not been too complex
+* There are some specialised I/O features, so basic input & output can be performed without relying on a complex "memory-mapped" bus implementation
+
 ## Index of Documents
 
 * [Instruction Set](InstructionSet.md) documents the semantics and encoding of each of the standard instructions
