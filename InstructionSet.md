@@ -140,7 +140,7 @@ The other difference is that the base register (which the immediate value would 
     
 NOTE: The first generation used register-width-specific encodings (0xC2 for 32-bit, 0xC3 for 64-bit). This was changed to make 32-/64-bit portability simpler (since they are essentially the same operations regardless of sizing).
 
-### Ctrlout64 (write 64-bit processor info)
+### Ctrlout (write processor info)
 
     OP_CTRLOUT  		0xCF
   
@@ -148,7 +148,7 @@ NOTE: The first generation used register-width-specific encodings (0xC2 for 32-b
     
 NOTE: The first generation used register-width-specific encodings (0xCA for 32-bit, 0xCB for 64-bit). This was changed to make 32-/64-bit portability simpler (since they are essentially the same operations regardless of sizing).
 
-### Read32 (read data memory)
+### Read32 (read 32-bit data memory, not sign-extended)
 
     OP_READ32			0xD2
   
@@ -159,7 +159,6 @@ The standard memory bus allows for 64-bit addresses but only handles 32 bits of 
 Implementations may provide specialised instructions and/or specialised hardware interfaces for dealing with other sizes, but as a standard 32-bit reads/writes are probably the most practical.
 
 Implementations can also either ignore or raise errors if the higher/lower bits of the addresses are not what they expect, or more generally if the address is protected or just beyond memory (this generally means that read/write addresses should be multiples of four, and that any unused higher bits should be left as zero).
-
 
 ### Read32h (read data memory, high 32-bits)
 
@@ -215,7 +214,7 @@ Reads 8 bits from memory and sign-extends it to fill the target register.
 
 Reads 32 bits from memory and sign-extends it to fill the target register.
 
-NOTE: This is only meaningful for 64-bit implementations, and need not be implemented on 32-bit versions.
+NOTE: This is only meaningful for 64-bit implementations, and on 32-bit implementations should be equivalent to performing a regular `read32` instruction.
 
 ### Write32 (write data memory)
 
