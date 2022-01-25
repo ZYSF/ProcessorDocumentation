@@ -26,10 +26,11 @@ The current version of the processor generator can even backport some fixes and 
 
 ## Index of Documents
 
-* [Instruction Set](InstructionSet.md) documents the semantics and encoding of each of the standard instructions.
-* [Control Registers](ControlRegisters.md) documents the meanings, encodings and indices of the control registers.
-* [Modes & Exceptions](ModesAndExceptions.md) documents the user-mode/system-mode switching and the meanings of the exception codes.
-* [Startup & Reset State](StartupAndResetState.md) documents the startup/reset sequence and what state to expect the core to be in at initialisation.
+* [Instruction Set](InstructionSet.md) documents the semantics and encoding of each of the standard instructions
+* [Control Registers](ControlRegisters.md) documents the meanings, encodings and indices of the control registers
+* [Modes & Exceptions](ModesAndExceptions.md) documents the user-mode/system-mode switching and the meanings of the exception codes
+* [Startup & Reset State](StartupAndResetState.md) documents the startup/reset sequence and what state to expect the core to be in at initialisation
 * [Addressing Modes](AddressingModes.md) should help to clarify the role of the MMU and the ways in which instructions, memory locations, I/O and control registers are addressed
+* [Portability Between 32- & 64-Bit Models](Portability32And64Bit.md) should serve as a design guide to 32-/64-bit variations and a programming reference for writing model-agnostic executables
 
 NOTE: Updated "RISC Emulation" circuitry as in the first generation still exists in the second-generation design but this has been de-prioritised in favour of other features (at least for now), and has been mostly isolated away from the core ISA design (except for the relevant mode-setting & instruction overriding information).
