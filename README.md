@@ -29,9 +29,9 @@ The current version of the processor generator can even backport some fixes and 
 The overall design is a somewhat-RISC-like system (roughly meaning that instructions typically share common sizing & layouts) and follows from some basic principles:
 
 * The instruction encoding needs to be original, purpose-designed and well-structured, specifically taking effort to ignore any complex operations from proprietary architectures and only implementing instructions as needs arise
-** Besides technical reasons, this serves to isolate the system from any complex intellectual property questions: _The core design (as documented here) is completely free for you to copy/modify/redistribute/etc._ "ProcessorDocumentation", "generation 1", "generation 2" etc. are not used as trademarks either!
+     * Besides technical reasons, this serves to isolate the system from any complex intellectual property questions: _The core design (as documented here) is completely free for you to copy/modify/redistribute/etc._ "ProcessorDocumentation", "generation 1", "generation 2" etc. are not used as trademarks either!
 * Porting existing compilers is not necessarily worth losing sleep over
-** I've already demonstrated that it's fairly easy to add additional decoding/emulation modes to the processor design
+     * I've already demonstrated that it's fairly easy to add additional decoding/emulation modes to the processor design
 * The system needs to be usable at least for testing purposes in simulators and "cheap" FPGAs (not necessarily _the cheapest_ FPGAs, but at least mid-level ones!)
 * The "processor" should be mostly self-reliant, besides obvious memory/IO interfaces (it shouldn't rely on any complex external circuitry or designs for any "core features")
 * Core features must include basic system-management and protection features (to ensure that basic system software doesn't need any extra add-ons to manage/debug programs properly)
