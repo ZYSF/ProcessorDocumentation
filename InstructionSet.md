@@ -26,7 +26,7 @@ For convenience, the descriptions below list their arguments in hex style, so a 
 
 Note that the register given as `a` is generally the "target register" (or whatever register is written to). This is why e.g. in an `ifequals` instruction the two register parameters are named `b` and `c` (since it compares two registers but doesn't write to any) whereas in a `read32` instruction they're named `a` and `b` (because it reads from one register and writest to another). In practice, it's often sensible to use the same register as both a source and a target (e.g. `add $r1, $r1, $r3` would effectively add the value of `$r3` to whatever's already in `$r1`), but generally the instructions will _only read_ from whatever is `b` or `c` and _only write_ to `a`.
 
-## Instructions
+## Essential Instructions
 
 ### Syscall
 
@@ -174,39 +174,7 @@ On a 32-bit processor implementation, this instruction can either be ignored com
 
 NOTE: The "first generation" processor design used/uses a different encoding of `0xD6`, which conflicts with other "second-generation" instructions. Assemblers/tools can refer to the old encoding as `OP_GEN1READ32H`.
 
-### Read16 (planned)
-
-    OP_READ16			0xD1
-  
-    0xD1abiiii: a=data[b+i];
-
-Only reads the lower 16 bits, the rest of the register is reset to zero.
-    
-### Read8 (planned)
-
-    OP_READ8			0xD0
-  
-    0xD0abiiii: a=data[b+i];
-
-Only reads the lower 8 bits, the rest of the target register is reset to zero.
-
-### Read16x (planned)
-
-    OP_READ16x			0xD5
-  
-    0xD5abiiii: a=data[b+i];
-
-Reads 16 bits from memory and sign-extends it to fill the target register.
-    
-### Read8x (planned)
-
-    OP_READ8x			0xD4
-  
-    0xD4abiiii: a=data[b+i];
-
-Reads 8 bits from memory and sign-extends it to fill the target register.
-
-### Read32x (planned)
+### Read32x
 
     OP_READ32x			0xD6
   
@@ -256,18 +224,6 @@ This allows for writing programs which adapt naturally to 32-/64-bit word sizes.
 
 NOTE: This conflicts with the old `WRITE32H` instruction encoding from the first generation, and partly works the same. Assemblers/tools can refer to the old instruction as something like `OP_GEN1WRITE32H`.
 
-### Write16 (planned)
-
-    OP_WRITE16      0xD9
-    
-    0xD9bciiii: data[b+i]=c; // Only writes lower 16 bits of register
-
-### Write8 (planned)
-
-    OP_WRITE8      0xD8
-    
-    0xD8bciiii: data[b+i]=c; // Only writes lower 8 bits of register
-
 ### In32 (read I/O)
 
     OP_IN32			0xE2
@@ -308,7 +264,69 @@ Conditionals use the constant in a special way (which should be handled automati
 
 This can also be used for unconditional jumps to local addresses (since any register always equals itself).
 
-## Recently-Added Instructions
+## Optional Instructions
+
+### Read64
+
+    OP_READ64			0xD3
+  
+    0xD3abiiii: a=data[b+i];
+
+Only supported on 64-bit implementations with full-featured bus.
+
+### Read16
+
+    OP_READ16			0xD1
+  
+    0xD1abiiii: a=data[b+i];
+
+Only reads the lower 16 bits, the rest of the register is reset to zero.
+    
+### Read8
+
+    OP_READ8			0xD0
+  
+    0xD0abiiii: a=data[b+i];
+
+Only reads the lower 8 bits, the rest of the target register is reset to zero.
+
+### Read16x
+
+    OP_READ16x			0xD5
+  
+    0xD5abiiii: a=data[b+i];
+
+Reads 16 bits from memory and sign-extends it to fill the target register.
+    
+### Read8x
+
+    OP_READ8x			0xD4
+  
+    0xD4abiiii: a=data[b+i];
+
+Reads 8 bits from memory and sign-extends it to fill the target register.
+
+### Write64
+
+    OP_WRITE64      0xDB
+    
+    0xDBbciiii: data[b+i]=c;
+
+Only supported on 64-bit implementations with full-featured bus.
+
+### Write16
+
+    OP_WRITE16      0xD9
+    
+    0xD9bciiii: data[b+i]=c; // Only writes lower 16 bits of register
+
+### Write8
+
+    OP_WRITE8      0xD8
+    
+    0xD8bciiii: data[b+i]=c; // Only writes lower 8 bits of register
+
+## Recently-Added/Changed Instructions
 
 These have only just been added at time of writing and haven't really been tested yet:
 
